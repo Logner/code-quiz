@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Code Quiz</title>
+  <link rel="stylesheet" href="./assets/style.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="header-item"><a href='https://logner.github.io'>Kumash</a>'s Code Quiz!</h1>
+        <div class='header-item high-scores'>
+            <h2><a id='high-scores' href='#'>View high scores</a></h2>
+        </div>
+        <div class='header-item timer'>
+            <h2>Timer: <span id='countdown'>inactive</span></h2>
+        </div>        
+      </header>
+        <main class="page-content" id='page-content'>
+            <div class='question-container' id='question-container'>
+                <div class='intro' id='intro'>
+                    <div class=content>
+                        <h2> Take this quiz to test your knowledge of CSS, HTML and JavaScript!</h2>
+                        <ul> 
+                            <li> You will have 60 seconds to finish this 5 question test. </li>
+                            <li> 10 seconds will be deducted for every incorrect answer. </li>
+                            <li> 5 seconds will be added for each correct answer. </li>
+                            <li> The test will stop when you run out of time or answer all questions. </li>
+                        </ul>
+                    </div>
+                    <div class='btn-container'>
+                        <button class="btn" id='start' type='submit'>Start</button>
+                    </div>
+                </div>
+                <!-- 
+                <div class="question multiple-choice" id=0>
+                    this is a sample multiple choice question
+                </div>    
+                <div class="question drag-drop" id='1'>
+                    this is a sample drag & drop question
+                </div>
+                <div class="question input" id='2'>
+                    this is a sample input question.
+                </div> 
+                -->
+            </div>
+      </main>
+      <footer>
+
+      </footer>  
+    <script src="./assets/script.js"></script>
+  </body>
+
+</html>
