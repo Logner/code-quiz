@@ -75,10 +75,11 @@ header h1{
     padding: 15px 10px;
 }
 
-.question-container li:hover{
+.question-container input:hover+label{
     color: var(--pink);
     background: var(--dark-teal);
     font-weight: bolder;
+    padding: 10px;
 }
 
 .question-container input[type=radio]{

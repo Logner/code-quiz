@@ -1,5 +1,5 @@
 // Length of quiz in seconds
-var counter = 10000;;
+var counter = 60;
 
 // Question Container
 // list of lists
@@ -136,19 +136,24 @@ var generateAnswers = function(questionList) {
 };
 
 var checkAnswer = function() {
-    // check for selected radio button
-    // console.log(answers);
-    // console.dir(answers);
+    ans = (answers.getElementsByTagName('input'));
+    for (i=0; i<ans.length; i++) {
+        // Finding Selected Answer
+        if (ans[i].checked)
+        {
+            ans = ans[i].id;
+        }
+    }
     // if right -> +5 sec
-
+    if (ans == 1) {
+        counter += 5;
+    }
     // else -5 sec
-
+    else{
+        counter -= 10;
+    }
     askNewQuestion();
 };
-
-
-
-
 
 // Timer logic, if timer runs out, go to end quiz.
 var countdown = function() {
@@ -188,7 +193,7 @@ var endQuiz = function () {
     countDownSpan.textContent = "Finished";
     console.log(askedQuestions);
     askedQuestions = [];
-    counter = 10000;
+    counter = 60;
 
     // TODO: Change this to make a score recording form
     questionContainer.innerHTML = '';
