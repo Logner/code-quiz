@@ -27,7 +27,7 @@ var startButton = document.getElementById('start');
 var countDownSpan = document.getElementById('countdown');
 var questionContainer = document.getElementById('question-container');
 var introPrompt = document.getElementById('intro');
-var pageContentEl = document.getElementById('page-content');
+var pageContentEl = document.querySelector('html');
 
 // Temporary container for enabling timer
 var countDownInterval = null;
@@ -259,3 +259,5 @@ var endQuiz = function () {
 }
 
 startButton.addEventListener('click', startQuiz);
+
+// TODO: add listeners for keys 1,2,3,4 and enter for submit button
