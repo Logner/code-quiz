@@ -12,6 +12,7 @@
     --dark-teal:#113B5C;
     --teal:#056674;
     --light-teal:#66BFBF;
+    --emrald:rgb(81, 152, 114);
 }
 
 html{
@@ -60,6 +61,7 @@ header h1{
 
 .question-container h2{
     color: var(--dark-teal);
+    margin: 0.2rem 0rem;
     width: 100%;
 }
 
@@ -92,7 +94,7 @@ header h1{
     color: var(--pink);
     background: var(--dark-teal);
     font-weight: bolder;
-    font-size: 1rem;
+    font-size: 1.5rem;
     padding: 10px;
 }
 
@@ -146,7 +148,6 @@ header h1{
         color: var(--pink);
         background: var(--dark-teal);
         font-weight: bolder;
-        font-size: 1.5rem;
         padding: 2px;
         }
 

@@ -179,22 +179,26 @@ var checkAnswer = function() {
             ans = ans[i].id;
         }
     }
+    console.log(ans);
     // if right -> +5 sec
     if (ans == 1) {
         counter += 5;
         countDownSpan.textContent = counter;
-        pageContentEl.setAttribute('style', "background:green;");
-        console.log('yop')
+        pageContentEl.setAttribute('style', "background:var(--emrald);");
+    }
+    // if no answer has been selected -> try again
+    else if (ans.constructor === HTMLCollection) {
+        submitAnswerButton.textContent = 'Submit after selecting a valid answer!';
+        return 0;
     }
     // else -5 sec
     else{
         counter -= 10;
         pageContentEl.setAttribute('style', "background:var(--pink);");
-        console.log('nop')
     }
 
     // eitherways, ask a new question.
-    resetHeaderStyle = setTimeout(resetHeader, 300);
+    resetHeaderStyle = setTimeout(resetHeader, 500);
     askNewQuestion();
 };
 
