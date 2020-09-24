@@ -27,7 +27,7 @@ var startButton = document.getElementById('start');
 var countDownSpan = document.getElementById('countdown');
 var questionContainer = document.getElementById('question-container');
 var introPrompt = document.getElementById('intro');
-var headerEl = document.getElementById('header');
+var pageContentEl = document.getElementById('page-content');
 
 // Temporary container for enabling timer
 var countDownInterval = null;
@@ -183,13 +183,13 @@ var checkAnswer = function() {
     if (ans == 1) {
         counter += 5;
         countDownSpan.textContent = counter;
-        headerEl.setAttribute('style', "background:green;");
+        pageContentEl.setAttribute('style', "background:green;");
         console.log('yop')
     }
     // else -5 sec
     else{
         counter -= 10;
-        headerEl.setAttribute('style', "background:var(--pink);");
+        pageContentEl.setAttribute('style', "background:var(--pink);");
         console.log('nop')
     }
 
@@ -209,7 +209,7 @@ var countdown = function() {
 
 // animation function
 var resetHeader = function() {
-    headerEl.removeAttribute('style');
+    pageContentEl.removeAttribute('style');
 }
 
 // Starting Quiz.
