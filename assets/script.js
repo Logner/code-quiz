@@ -27,6 +27,7 @@ var startButton = document.getElementById('start');
 var countDownSpan = document.getElementById('countdown');
 var questionContainer = document.getElementById('question-container');
 var introPrompt = document.getElementById('intro');
+var headerEl = document.getElementById('header');
 
 // Temporary container for enabling timer
 var countDownInterval = null;
@@ -36,6 +37,8 @@ var submitAnswerButton = null;
 var answers = null;
 // Empty Container for preventing repeated questions
 var askedQuestions = [];
+// Used for resetting the heaer style
+var resetHeaderStyle = null;
 
 // Preventing Repeated Questions
 var questionSelector = function() {
@@ -179,12 +182,19 @@ var checkAnswer = function() {
     // if right -> +5 sec
     if (ans == 1) {
         counter += 5;
+        countDownSpan.textContent = counter;
+        headerEl.setAttribute('style', "background:green;");
+        console.log('yop')
     }
     // else -5 sec
     else{
         counter -= 10;
+        headerEl.setAttribute('style', "background:var(--pink);");
+        console.log('nop')
     }
+
     // eitherways, ask a new question.
+    resetHeaderStyle = setTimeout(resetHeader, 300);
     askNewQuestion();
 };
 
@@ -192,11 +202,15 @@ var checkAnswer = function() {
 var countdown = function() {
     counter --;
     countDownSpan.textContent = counter;
-    if (counter===0){
+    if (counter < 1){
         endQuiz();
     };
 };
 
+// animation function
+var resetHeader = function() {
+    headerEl.removeAttribute('style');
+}
 
 // Starting Quiz.
 var startQuiz = function() {
@@ -217,10 +231,12 @@ var startQuiz = function() {
 
 // Ending Quiz
 var endQuiz = function () {
+    // Updating the timer to reflect the counter at the time end-quiz was triggered.
     countDownSpan.textContent = counter;
 
     // Recording quiz stats
     currentScore = counter;
+    
     // Setting the minimum score to zero.
     if (currentScore < 0) {currentScore = 0};
 
@@ -238,7 +254,7 @@ var endQuiz = function () {
     questionContainer.innerHTML = '';
     questionContainer.appendChild(introPrompt);
 
-    // Notifying User 
+    // TODO: Dont use alert, make a card for notifiying them of the high-score
     alert('The quiz has ended. \nNew Score: ' + currentScore);
 }
 
