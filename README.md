@@ -1,1 +1,1 @@
-# Coding Quiz
+# [Code Quiz](https://logner.github.io/code-quiz)
