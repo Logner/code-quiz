@@ -12,18 +12,35 @@ var questions = [['What Javascript expression do we use to run a block of code b
                 'Cascading Style Sheets', 'Convergent Simple Styles', 'Configurated Style Selector', 'Combination Style Sheets'],
                 ['Which of the following is NOT one of the css properties used to achieve responsive designs?',
                 'width', 'float', 'flex', 'grid']];
-var asked_questions = [];
+var askedQuestions = [];
 
 // Score keeping
 var currentScore = 0;
 
+// Grabbing elements present on DOM
 var startButton = document.getElementById('start');
 var countDownSpan = document.getElementById('countdown');
 var questionContainer = document.getElementById('question-container');
 var introPrompt = document.getElementById('intro');
 var countDownInterval = null;
 
+var questionSelector = function() {
+    num = Math.floor(Math.random()*questions.length);
+
+    for (var i=0; i<askedQuestions.length; i++) {
+        if (askedQuestions[i] === i) {
+            questionSelector();
+            break;
+        }
+    }
+    return questions[num];
+}
+
+
+
 var generateQuestionEl = function() {
+    var newQuestion = questionSelector();
+
     // Making the question prompt box
     var newQuestionEl = document.createElement('div');
 
@@ -33,7 +50,7 @@ var generateQuestionEl = function() {
     var question = questionContent.appendChild(document.createElement('h2'));
 
     // selected-question[0]
-    question.textContent = 'A question will be here';
+    question.textContent = newQuestion[0];
     var answers = questionContent.appendChild(document.createElement('ul'));
     // for i in selected-question: attach li randomly, if li is at 1, set id or class to correct-answer
 
@@ -56,7 +73,8 @@ var endQuiz = function () {
     // Clears interval of the startCoundown variable
     clearInterval(countDownInterval);
     countDownInterval = null;
-    asked_questions = [];
+    console.log(askedQuestions);
+    askedQuestions = [];
 
     // Resetting Counter
     counter = 5
@@ -69,7 +87,7 @@ var endQuiz = function () {
 
 
 var askNewQuestion = function() {
-    if (asked_questions.length === 5) {
+    if (askedQuestions.length === 5) {
         endQuiz();
     }
     else{
