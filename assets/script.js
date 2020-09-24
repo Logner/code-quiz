@@ -1,17 +1,23 @@
 // Length of quiz in seconds
-var counter = 5;
+var counter = 10000;;
 
 // Question Container
+// list of lists
+// questions[i] = [question, correct_answer, wrong answers*]
 var questions = [['What Javascript expression do we use to run a block of code based on a boolean criteria?',
                     'if', 'for', 'var', 'alert'],
                 ['Which object is the root of the DOM?', 
                 'document', 'console', 'window', 'html'],
                 ['Which tag is the root of a typical html file?',
                 'html', 'body', 'head', 'DOCTYPE'],
+                ['Which object is the root of a webpage in javascript?',
+                'window', 'document', 'html', 'the URL'],
                 ['What is the full name for css?',
-                'Cascading Style Sheets', 'Convergent Simple Styles', 'Configurated Style Selector', 'Combination Style Sheets'],
+                'Cascading Style Sheets', 'Convquestionsergent Simple Styles', 'Configurated Style Selector', 'Combination Style Sheets'],
                 ['Which of the following is NOT one of the css properties used to achieve responsive designs?',
-                'width', 'float', 'flex', 'grid']];
+                'width', 'float', 'flex', 'grid'],
+                ['What is the ul tag responsible for in HTML?',
+                'It makes a bullet point list', 'It makes a numbered list', 'It refers adds a universal link', 'It adds a hyperlink', ]];
 var askedQuestions = [];
 
 // Score keeping
@@ -23,20 +29,39 @@ var countDownSpan = document.getElementById('countdown');
 var questionContainer = document.getElementById('question-container');
 var introPrompt = document.getElementById('intro');
 var countDownInterval = null;
+var submitAnswerButton = null;
+var answers = null;
 
+// Preventing Repeating Questions
 var questionSelector = function() {
+
+    // Select a random number
     num = Math.floor(Math.random()*questions.length);
 
-    for (var i=0; i<askedQuestions.length; i++) {
-        if (askedQuestions[i] === i) {
-            questionSelector();
-            break;
-        }
+    // if list has number in it, generate a new number
+    while (askedQuestions.includes(num)){
+        num = Math.floor(Math.random()*questions.length);
     }
+
+    // Adding the selected question to askedQuestions
+    askedQuestions.push(num);
+
+    // Returning a new question
     return questions[num];
 }
 
-
+// Asking new question logic, if 5 questions have been asked, go to endquiz.
+var askNewQuestion = function() {
+    if (askedQuestions.length === 5) {
+        endQuiz();
+    }
+    // Otherwise generate remove old question and make new question.
+    else{
+    questionContainer.innerHTML = '';
+    var newQuestionEl = generateQuestionEl();
+    questionContainer.appendChild(newQuestionEl);
+    }
+}
 
 var generateQuestionEl = function() {
     var newQuestion = questionSelector();
@@ -51,8 +76,10 @@ var generateQuestionEl = function() {
 
     // selected-question[0]
     question.textContent = newQuestion[0];
-    var answers = questionContent.appendChild(document.createElement('ul'));
+    answers = questionContent.appendChild(document.createElement('ul'));
+
     // for i in selected-question: attach li randomly, if li is at 1, set id or class to correct-answer
+    generateAnswers(newQuestion);
 
     // Submit button for logic integration
     var submitAnswerContainer = newQuestionEl.appendChild(document.createElement('div'));
@@ -62,41 +89,68 @@ var generateQuestionEl = function() {
     submitButton.textContent = 'Submit'
 
     //Create logic that links submitButton to Evaluate answer and ask new question.
-    
+    submitAnswerButton = submitButton;
+    // TODO: Change this to checkAnswer
+    submitAnswerButton.addEventListener('click', checkAnswer);
+
     return newQuestionEl;
 }
 
-var endQuiz = function () {
-    countDownSpan.textContent = "Finished";
-    currentScore = counter;
+var generateAnswers = function(questionList) {
+    var rndAnsLst = [];
+    var newAns = null;
+    var newAnsText = null;
 
-    // Clears interval of the startCoundown variable
-    clearInterval(countDownInterval);
-    countDownInterval = null;
-    console.log(askedQuestions);
-    askedQuestions = [];
+    // Select a random number
+    num = Math.floor(Math.random()*(questionList.length-1))+1;
 
-    // Resetting Counter
-    counter = 5
+    // returns the number or ('true') if the number is found
+    // Could be a bottleneck with large datasets, but for us its a small enough scale to be effective.
+    while (rndAnsLst.length < questionList.length-1) {
+        while (rndAnsLst.includes(num)) {
+            num = Math.floor(Math.random()*(questionList.length-1))+1;
+        };
+        rndAnsLst += num;
+    };
 
-    // Re-attach intro to questionContainer
-    questionContainer.innerHTML = '';
-    questionContainer.appendChild(introPrompt);
-    alert('New Score: ' + currentScore);
-}
+    for (i=0; i<rndAnsLst.length; i++) {
+        li = document.createElement('li');
+        li.setClassName = 1;
+        newAns = document.createElement('input');
+        newAns.setAttribute('type', 'radio');
+        newAns.setAttribute('value', rndAnsLst[i]);
+        newAns.setAttribute('id', rndAnsLst[i]);
+        newAns.setAttribute('name', askedQuestions[askedQuestions.length-1]);
+        newAns.textContent = questionList[rndAnsLst[i]];
+        newAnsText = document.createElement('label');
+        newAnsText.textContent = questionList[rndAnsLst[i]]
+        newAnsText.setAttribute('for', rndAnsLst[i]);
 
-
-var askNewQuestion = function() {
-    if (askedQuestions.length === 5) {
-        endQuiz();
+        li.appendChild(newAns);
+        li.appendChild(newAnsText);
+        answers.appendChild(li);
     }
-    else{
-    questionContainer.innerHTML = '';
-    var newQuestionEl = generateQuestionEl();
-    questionContainer.appendChild(newQuestionEl);
-    }
-}
 
+    console.log(answers);
+
+};
+
+var checkAnswer = function() {
+    // check for selected radio button
+    // console.log(answers);
+    // console.dir(answers);
+    // if right -> +5 sec
+
+    // else -5 sec
+
+    askNewQuestion();
+};
+
+
+
+
+
+// Timer logic, if timer runs out, go to end quiz.
 var countdown = function() {
     counter --;
     countDownSpan.textContent = counter;
@@ -104,9 +158,11 @@ var countdown = function() {
         endQuiz();
     };
 };
-// setInterval (func, milliseconds)
-// why does adding brackets to countdown only trigger the function once.
-var startCountdown = function() {
+
+
+// Starting Quiz.
+var startQuiz = function() {
+    // Incase a user double clicks the start-quiz button and the timer starts ticking twice-as-fast.
     if (countDownInterval) {
         console.log('Cant start now');
     }
@@ -118,4 +174,28 @@ var startCountdown = function() {
     };
 }
 
-startButton.addEventListener('click', startCountdown);
+// Ending Quiz
+var endQuiz = function () {
+
+    // Recording quiz stats
+    currentScore = counter;
+
+    // Stopping the timer
+    clearInterval(countDownInterval);
+    countDownInterval = null;
+
+    // Resetting Variables
+    countDownSpan.textContent = "Finished";
+    console.log(askedQuestions);
+    askedQuestions = [];
+    counter = 10000;
+
+    // TODO: Change this to make a score recording form
+    questionContainer.innerHTML = '';
+    questionContainer.appendChild(introPrompt);
+
+    // Notifying User 
+    alert('The quiz has ended. \nNew Score: ' + currentScore);
+}
+
+startButton.addEventListener('click', startQuiz);

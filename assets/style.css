@@ -60,14 +60,19 @@ header h1{
 
 .question-container h2{
     color: var(--dark-teal);
+    width: 100%;
+}
+
+.question-container ul{
+    text-align: left;
 }
 
 .question-container li{
     list-style: none;
     width: fit-content;
     color: var(--teal);
-    margin: 5px 35px;
-    padding: 10px;
+    margin: 0px 35px;
+    padding: 15px 10px;
 }
 
 .question-container li:hover{
@@ -76,8 +81,25 @@ header h1{
     font-weight: bolder;
 }
 
+.question-container input[type=radio]{
+    opacity:0;
+}
 
-.question-cointainer div{
+.question-contianer label{
+    padding: 10px;
+}
+
+.question-container input:checked+label{
+    opacity: 100;
+    color: var(--pink);
+    background: var(--dark-teal);
+    font-weight: bolder;
+    font-size: 16px;
+    padding: 10px;
+}
+
+
+.question-container div{
     display: flex;
     flex-wrap: wrap;
 }
