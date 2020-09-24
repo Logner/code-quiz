@@ -2,7 +2,7 @@
 var counter = 60;
 
 // Question Container
-// list of lists
+// array of arrays
 // questions[i] = [question, correct_answer, wrong answers*]
 var questions = [['What Javascript expression do we use to run a block of code based on a boolean criteria?',
                     'if', 'for', 'var', 'alert'],
