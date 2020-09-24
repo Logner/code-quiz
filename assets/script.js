@@ -24,14 +24,34 @@ var introPrompt = document.getElementById('intro');
 var countDownInterval = null;
 
 var generateQuestionEl = function() {
+    // Making the question prompt box
+    var newQuestionEl = document.createElement('div');
+
+    // Where the questions will be held
+    var questionContent = newQuestionEl.appendChild(document.createElement('div'));
+    questionContent.className = 'content';
+    var question = questionContent.appendChild(document.createElement('h2'));
+
+    // selected-question[0]
+    question.textContent = 'A question will be here';
+    var answers = questionContent.appendChild(document.createElement('ul'));
+    // for i in selected-question: attach li randomly, if li is at 1, set id or class to correct-answer
+
+    // Submit button for logic integration
+    var submitAnswerContainer = newQuestionEl.appendChild(document.createElement('div'));
+    submitAnswerContainer.className = 'btn-container';
+    var submitButton = submitAnswerContainer.appendChild(document.createElement('button'));
+    submitButton.className = 'btn'
+    submitButton.textContent = 'Submit'
+
+    //Create logic that links submitButton to Evaluate answer and ask new question.
     
+    return newQuestionEl;
 }
 
 var endQuiz = function () {
     countDownSpan.textContent = "Finished";
     currentScore = counter;
-    console.log(currentScore);
-
 
     // Clears interval of the startCoundown variable
     clearInterval(countDownInterval);
@@ -42,8 +62,8 @@ var endQuiz = function () {
     counter = 5
 
     // Re-attach intro to questionContainer
+    questionContainer.innerHTML = '';
     questionContainer.appendChild(introPrompt);
-    console.log(currentScore);
     alert('New Score: ' + currentScore);
 }
 
