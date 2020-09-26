@@ -4,8 +4,8 @@ This is the week 4 project from the University of Toronto SCS bootcamp. I have u
 
 Try it out and test your knowledge! 
 
-There may be some unfair/incorrect questions. If there are, please let me know in the issues!!
+There may be some unfair/incorrect questions. If you find some questions or have suggestions for more, please let me know in the issues!!
 
-as always- this is a responsive app!
+as always - this is a responsive app!
 
 ![screenshot](./assets/code-quiz.png)
