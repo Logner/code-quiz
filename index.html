@@ -7,13 +7,14 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Code Quiz</title>
   <link rel="stylesheet" href="./assets/style.css">
+  <link rel="icon" type="image/png" href="./assets/favicon.png"/>
 </head>
 
 <body id='all-content'>
     <header id='header'>
         <h1 class="header-item"><a href='https://logner.github.io'>Kumash</a>'s Code Quiz!</h1>
         <div class='header-item high-scores'>
-            <h2><a id='high-scores' href='#'>View high scores</a></h2>
+            <h2><a id='show-high-scores' href='#'>View high scores</a></h2>
         </div>
         <div class='header-item timer'>
             <h2>Timer: <span id='countdown'>inactive</span></h2>
@@ -32,6 +33,7 @@
                         </ul>
                     </div>
                     <div class='btn-container'>
+                        <p class='message-container'></p>
                         <button class="btn" id='start' type='submit'>Start</button>
                     </div>
                 </div>
@@ -49,9 +51,9 @@
             </div>
       </main>
       <footer>
-
-      </footer>  
-    <script src="./assets/script.js"></script>
+        <script src='./assets/hex.js'></script>
+        <script src="./assets/script.js"></script>
+      </footer>
   </body>
 
 </html>
