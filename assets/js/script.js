@@ -98,7 +98,7 @@ var questionSelector = function() {
 var askNewQuestion = function() {
 
     // if 5 questions have been asked, end the quiz.
-    if (askedQuestions.length === 1) {
+    if (askedQuestions.length === 5) {
         endQuiz();
     }
 
