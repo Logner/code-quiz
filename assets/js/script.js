@@ -41,13 +41,16 @@ var answers = null;
 var askedQuestions = [];
 // Used for resetting the header style
 var resetHeaderStyle = null;
+// Current Question
+var currentQuestion = null;
 
 // valid characters for highscore.
 var validChars = [];
 
 // Character validation loop;
-var validateChars = function(input) {
+var validateChars = function(inp) {
     char_switch = false;
+    input = inp.toUpperCase();
     for (i=0; i < input.length; i++) {
         for (j=0; j < validChars.length; j++) {
             if (input[i] == validChars[j]){
@@ -68,12 +71,8 @@ function gen_continuous_char_list(start_hex, end_hex) {
       validChars.push(String.fromCharCode(i));
     };
   };
-// Unicode: 41-5A 
+// A-Z Unicode: 41-5A 
 gen_continuous_char_list('41', '5A')
-
-// Unicode: 61-7A
-gen_continuous_char_list('61', '7A')
-
 
 
 // Preventing Repeated Questions
@@ -107,6 +106,7 @@ var askNewQuestion = function() {
     questionContainer.innerHTML = '';
     messageContainer.innerHTML = '';
     var newQuestionEl = generateQuestionEl();
+    currentQuestion = newQuestionEl;
     questionContainer.appendChild(newQuestionEl);
     }
 }
@@ -171,7 +171,7 @@ var generateAnswers = function(questionList) {
     for (i=0; i<rndAnsLst.length; i++) {
         // create li
         li = document.createElement('li');
-        li.setClassName = 1;
+        li.className = 'ans-'+i;
 
         // create the input element in the form of a radio button
         newAns = document.createElement('input');
@@ -269,13 +269,14 @@ var startQuiz = function() {
         // otherwise the text wont change to a number until a second has passed.
         countDownSpan.textContent = counter;
         countDownInterval=setInterval(countdown, 1000);
-        document.querySelector('.high-scores').setAttribute('style','visibilty:hidden');
         askNewQuestion();
     };
 }
 
 // making high-score prompt
 var makeHighScorePrompt = function() {
+
+    questionContainer.innerHTML = '';
 
     // Making the container for the highscore content
     var highScoreEl = document.createElement('div');
@@ -288,9 +289,17 @@ var makeHighScorePrompt = function() {
     var playerInitialsInput = highScoreContent.appendChild(document.createElement('input'));
 
     // Generating end game messages
-    quizEndMessage.textContent = 'Good job finishing the quiz! \n\n your new score is '+currentScore;
-    playerInitialsInput.setAttribute('placeholder', 'Please enter your initials here!')
-    playerInitialsInput.className = 'player-name'
+    var finalText = ''
+    if (currentScore < 1) {
+        finalText = 'lol 0'
+    } else if (currentScore < 30) {
+        finalText = 'Got a few too many wrong! Ending with a score of '+currentScore+'.'
+    } else if (currentScore < 55) {
+        finalText = 'Good job!! you did great! score: '+currentScore+'.'
+    } else {finalText = "I am truly astonished! Either you're a wizard or you've spent more time looking at my code than I have! Score: "+currentScore+'.'};
+    quizEndMessage.textContent = finalText;
+    playerInitialsInput.setAttribute('placeholder', 'Please enter your initials here!');
+    playerInitialsInput.className = 'player-name';
 
 
     // Creating a submit button
@@ -298,10 +307,12 @@ var makeHighScorePrompt = function() {
     submitHighScoreContainer.className = 'btn-container';
     var submitButton = submitHighScoreContainer.appendChild(document.createElement('button'));
     submitButton.className = 'submit-highscore btn'
+    submitButton.id = 'submit-high-score'
     submitButton.textContent = 'Submit'
 
-    return highScoreEl;
-}
+    questionContainer.appendChild(highScoreEl);
+    submitButton.addEventListener('click', storeHighScore);
+    };
 
 var validateScore = function (score, playerName) {
     // fetch all scores from json.
@@ -338,6 +349,7 @@ var storeHighScore = function() {
 
     if (playerName.length==2 && validation) {
         //Store Highscore
+        playerName = playerName.toUpperCase();
         scores = window.localStorage.getItem('highscore')
         if (scores) {
             scores = validateScore(scores, playerName);
@@ -353,6 +365,7 @@ var storeHighScore = function() {
         
         //Show Intro Element
         questionContainer.innerHTML = '';
+        countDownSpan.textContent = 'inactive';
         questionContainer.appendChild(introPrompt);
 
         //Blink to show score is stored;
@@ -386,13 +399,28 @@ var showHighScores = function () {
     // Generating end game messages
     highScoreMessage.textContent = 'Highscores';
 
-    // Creating a start new game button
+    // going back to the screen we came from
     var buttonContainer = highScoreEl.appendChild(document.createElement('div'));
     buttonContainer.className = 'btn-container';
     var submitButton = buttonContainer.appendChild(document.createElement('button'));
     submitButton.className = 'btn';
-    submitButton.textContent = 'Start a new game';
-    submitButton.addEventListener('click',startQuiz);
+    submitButton.textContent = 'Go back.';
+    submitButton.id = 'go-back';
+    submitButton.addEventListener('click', function () {
+        if (countDownSpan.textContent =='inactive'){
+            questionContainer.innerHTML = '';
+            questionContainer.appendChild(introPrompt);
+            messageContainer.innerHTML = '';
+        }
+        else if(countDownSpan.textContent == 'finished'){
+            makeHighScorePrompt();
+        }
+        else {
+            questionContainer.innerHTML = '';
+            questionContainer.appendChild(currentQuestion);
+        }
+
+    });
 
     var highScoreContainer = highScoreContent.appendChild(document.createElement('ul'));
     var head = highScoreContainer.appendChild(document.createElement('li'));
@@ -407,6 +435,7 @@ var showHighScores = function () {
     }
 
     questionContainer.appendChild(highScoreEl);
+
 }
 
 // Ending Quiz
@@ -429,15 +458,38 @@ var endQuiz = function () {
     askedQuestions = [];
     counter = 60;
 
-    // TODO: Change this to make a score recording form
-    questionContainer.innerHTML = '';
-    highScorePrompt = makeHighScorePrompt()
-    document.querySelector('.high-scores').removeAttribute('style')
-    questionContainer.appendChild(highScorePrompt);
-    highScorePrompt.querySelector('.submit-highscore').addEventListener('click', storeHighScore);
+    // Change this to make a score recording form
+    makeHighScorePrompt();
+    
 }
 
 startButton.addEventListener('click', startQuiz);
 highScoreButton.addEventListener('click', showHighScores)
 
-// TODO: add listeners for keys 1,2,3,4 and enter for submit button
+// Execute a function when the user releases a key on the keyboard
+document.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+      // click the go-back button if on the high-score list screen
+    if (document.querySelector('#go-back')){
+
+        // TODO: the below code causes a weird glitch...
+        //document.querySelector('#go-back').click()  
+
+     // click the submit score button if on the high-score submit screen 
+    } else if (countDownSpan.textContent == 'finished') {
+        document.getElementById("submit-high-score").click();
+
+    // click on the submit answer button if in the quiz
+    } else if (countDownSpan.textContent == 'inactive') {
+        startButton.click();
+    } else { submitAnswerButton.click() }
+  } // key 1
+    if (event.code=='Digit1') {currentQuestion.querySelector('.ans-0').querySelector('input').click()}
+    // key 2
+    if (event.code=='Digit2') {currentQuestion.querySelector('.ans-1').querySelector('input').click()}
+    // key 3
+    if (event.code=='Digit3') {currentQuestion.querySelector('.ans-2').querySelector('input').click()}
+    // key 4
+    if (event.code=='Digit4') {currentQuestion.querySelector('.ans-3').querySelector('input').click()}
+});
