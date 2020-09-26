@@ -17,7 +17,7 @@ var questions = [['What Javascript expression do we use to run a block of code b
                 ['Which of the following is NOT one of the css properties used to achieve responsive designs?',
                 'font-weight', 'float', 'flex', 'grid'],
                 ['What is the ul tag responsible for in HTML?',
-                'It makes a bullet point list', 'It makes a numbered list', 'It refers adds a universal link', 'It adds a hyperlink', ]];
+                'It makes a bullet point list', 'It makes a numbered list', 'It refers to a universal link', 'It adds a hyperlink', ]];
 
 // Score keeping
 var currentScore = 0;
