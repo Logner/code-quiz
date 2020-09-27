@@ -171,7 +171,11 @@ var generateAnswers = function(questionList) {
     for (i=0; i<rndAnsLst.length; i++) {
         // create li
         li = document.createElement('li');
-        li.className = 'ans-'+i;
+        li.className = 'ans-'+i;  
+
+        // making answer text unselectable
+        li.setAttribute('onselectstart','return false');
+
 
         // create the input element in the form of a radio button
         newAns = document.createElement('input');
