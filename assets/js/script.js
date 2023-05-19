@@ -237,7 +237,7 @@ var checkAnswer = function() {
     }
     // else -5 sec
     else{
-        counter -= 10;
+        counter -= 3;
         pageContentEl.setAttribute('style', "background:var(--pink);");
     }
 
