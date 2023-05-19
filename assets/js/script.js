@@ -380,7 +380,7 @@ var storeHighScore = function() {
     else{
         // change text
         submitButton = pageContentEl.querySelector('.submit-highscore');
-        submitButton.textContent = 'Please submit your initials!'
+        submitButton.textContent = 'Only 2 letters please :)'
         //Blink to show attempt failed;
         pageContentEl.setAttribute('style', 'background:var(--pink)');
         resetHeaderStyle = setTimeout(resetHeader, 500);
