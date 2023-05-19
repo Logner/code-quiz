@@ -295,12 +295,12 @@ var makeHighScorePrompt = function() {
     // Generating end game messages
     var finalText = ''
     if (currentScore < 1) {
-        finalText = 'lol 0'
+        finalText = 'Keep trying! take some time :)'
     } else if (currentScore < 30) {
-        finalText = 'Got a few too many wrong! Ending with a score of '+currentScore+'.'
+        finalText = 'A score of '+currentScore+' is pretty close to greatness!'
     } else if (currentScore < 55) {
         finalText = 'Good job!! you did great! score: '+currentScore+'.'
-    } else {finalText = "I am truly astonished! Either you're a wizard or you've spent more time looking at my code than I have! Score: "+currentScore+'.'};
+    } else {finalText = "Wow! Thats amazing! more than 55 is more than what I conditioned for! Score: "+currentScore+'.'};
     quizEndMessage.textContent = finalText;
     playerInitialsInput.setAttribute('placeholder', 'Please enter your initials here!');
     playerInitialsInput.className = 'player-name';
